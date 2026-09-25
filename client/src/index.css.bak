@@ -1,0 +1,616 @@
+/* =========================================================================
+   Campus Action — Global Styles (Task 10.2)
+
+   Covers:
+   - Req 8.2: consistent typographic scale + uniform spacing system (CSS vars)
+   - Req 8.3: WCAG 2.1 AA color contrast (>= 4.5:1 text, >= 3:1 large/UI)
+   - Req 8.4: visible focus indicators on all interactive elements
+   - Req 8.5: responsive 375px-1440px, no horizontal scroll / overflow
+   - Req 8.6: fade-in / slide-in section animation <= 400ms
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Design tokens: typographic scale + spacing system (Req 8.2)
+   ------------------------------------------------------------------------- */
+:root {
+  /* Typographic scale (1.25 ratio, 16px base) */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.25rem;   /* 20px */
+  --font-size-xl: 1.5rem;    /* 24px */
+  --font-size-2xl: 2rem;     /* 32px */
+
+  --line-height-tight: 1.25;
+  --line-height-base: 1.6;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing system (4px base) */
+  --space-1: 0.25rem;  /* 4px  */
+  --space-2: 0.5rem;   /* 8px  */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-8: 3rem;     /* 48px */
+
+  /* Radii + elevation */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06),
+    0 1px 3px rgba(16, 24, 40, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(16, 24, 40, 0.1),
+    0 2px 4px -2px rgba(16, 24, 40, 0.06);
+
+  /* Palette — chosen for WCAG 2.1 AA contrast (Req 8.3) */
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #d0d5dd;
+  --color-text: #1a1a2e;        /* ~15:1 on white */
+  --color-text-muted: #4a5568;  /* ~7.5:1 on white */
+  --color-primary: #1d4ed8;     /* blue 700, ~6.3:1 on white */
+  --color-primary-hover: #1e40af;
+  --color-primary-contrast: #ffffff;
+  --color-focus: #1d4ed8;
+
+  /* Status colors — backgrounds paired with dark text for AA contrast */
+  --color-error-bg: #fde8e8;
+  --color-error-border: #f5c2c2;
+  --color-error-text: #8a1c1c;  /* dark red on light red bg, >= 4.5:1 */
+
+  /* Layout */
+  --content-max-width: 900px;
+
+  /* Animation */
+  --anim-duration: 350ms; /* <= 400ms per Req 8.6 */
+  --anim-easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* -------------------------------------------------------------------------
+   Reset + base
+   ------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Prevent horizontal overflow at any width (Req 8.5) */
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+/* -------------------------------------------------------------------------
+   Accessibility: visible focus indicators (Req 8.4)
+   ------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Fallback for browsers without :focus-visible */
+button:focus,
+textarea:focus,
+a:focus {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   App layout (Req 8.5 — responsive, centered, no overflow)
+   ------------------------------------------------------------------------- */
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__main {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* -------------------------------------------------------------------------
+   Header
+   ------------------------------------------------------------------------- */
+.header {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-2);
+  text-align: center;
+}
+
+.header__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+}
+
+.header__subtitle {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------------------
+   Announcement input
+   ------------------------------------------------------------------------- */
+.announcement-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.announcement-input__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.announcement-input__textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  padding: var(--space-3);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.announcement-input__textarea:disabled {
+  background-color: #eef1f5;
+  cursor: not-allowed;
+}
+
+.announcement-input__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.char-counter {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.char-counter--at-limit {
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.announcement-input__limit-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.announcement-input__validation {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.announcement-input__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.announcement-input__button {
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.announcement-input__button:hover:not(:disabled) {
+  background-color: #eef1f5;
+}
+
+.announcement-input__button--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+
+.announcement-input__button--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.announcement-input__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading indicator inside the submit button (Req 7.1) */
+.announcement-input__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.announcement-input__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: campus-spin 700ms linear infinite;
+}
+
+@keyframes campus-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Results dashboard states
+   ------------------------------------------------------------------------- */
+.results-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.results-dashboard--empty,
+.results-dashboard--loading,
+.results-dashboard--error {
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  font-size: var(--font-size-base);
+}
+
+.results-dashboard--empty {
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.results-dashboard--loading {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.results-dashboard--error {
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.results-dashboard__empty-text {
+  max-width: 34rem;
+  margin: 0 auto;
+  line-height: var(--line-height-base);
+}
+
+.results-dashboard__summary {
+  margin-top: var(--space-3);
+  line-height: var(--line-height-base);
+}
+
+.results-dashboard__summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.results-dashboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.results-dashboard__list-item {
+  position: relative;
+  padding-left: var(--space-5);
+  line-height: var(--line-height-base);
+}
+
+.results-dashboard__list-item::before {
+  content: '•';
+  position: absolute;
+  left: var(--space-2);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.results-dashboard__dates {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.results-dashboard__placeholder {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   Section card (Req 8.1 — card layout; Req 8.6 — animation)
+   ------------------------------------------------------------------------- */
+.section-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.section-card__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.section-card__body {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+/* Fade-in + slide-in on appearance (Req 8.6 — <= 400ms) */
+.section-card--animate {
+  animation: campus-fade-slide-in var(--anim-duration) var(--anim-easing) both;
+}
+
+@keyframes campus-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Priority badge (Req 6.4, 8.3 — distinct color + icon + label)
+   Colors supplement the icon/label; text is dark on light for AA contrast.
+   ------------------------------------------------------------------------- */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  border: 1px solid transparent;
+}
+
+.priority-badge__label {
+  line-height: 1;
+}
+
+.priority-badge--urgent {
+  background-color: #fde3e3;
+  border-color: #f3b4b4;
+  color: #8a1c1c; /* dark red on light red — >= 4.5:1 */
+}
+
+.priority-badge--important {
+  background-color: #fdf0d5;
+  border-color: #eccf8f;
+  color: #7a4b00; /* dark amber on light amber — >= 4.5:1 */
+}
+
+.priority-badge--informational {
+  background-color: #dbeafe;
+  border-color: #9cc3f5;
+  color: #1e3a8a; /* dark blue on light blue — >= 4.5:1 */
+}
+
+/* -------------------------------------------------------------------------
+   Action checklist (Req 6.2, 6.8)
+   ------------------------------------------------------------------------- */
+.action-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.action-checklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: var(--line-height-base);
+}
+
+.action-checklist__box {
+  font-size: var(--font-size-lg);
+  line-height: 1.2;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.action-checklist__label {
+  color: var(--color-text);
+}
+
+.action-checklist__placeholder {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   Date card (Req 6.3)
+   ------------------------------------------------------------------------- */
+.date-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background-color: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+}
+
+.date-card__date {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.date-card__event {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.date-card__status {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+/* -------------------------------------------------------------------------
+   Missing information section
+   ------------------------------------------------------------------------- */
+.missing-info-section__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.missing-info-section__item {
+  position: relative;
+  padding-left: var(--space-5);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+}
+
+.missing-info-section__item::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  color: #7a4b00;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive breakpoints (Req 8.5 — 375px to 1440px, no horizontal scroll)
+   ------------------------------------------------------------------------- */
+
+/* Small screens (>= 375px handled by base fluid layout). Tighten padding. */
+@media (max-width: 480px) {
+  .app__main {
+    padding: var(--space-4) var(--space-3);
+    gap: var(--space-5);
+  }
+
+  .header {
+    padding: var(--space-5) var(--space-3) var(--space-2);
+  }
+
+  .header__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .header__subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .section-card,
+  .announcement-input {
+    padding: var(--space-4);
+  }
+
+  /* Buttons stack full-width for easy tapping on narrow screens */
+  .announcement-input__actions {
+    flex-direction: column;
+  }
+
+  .announcement-input__button {
+    width: 100%;
+  }
+}
+
+/* Two-column date grid on wider viewports */
+@media (min-width: 720px) {
+  .results-dashboard__dates {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion: honor user preference (accessibility)
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .section-card--animate {
+    animation: none;
+  }
+
+  .announcement-input__spinner {
+    animation-duration: 1500ms;
+  }
+}

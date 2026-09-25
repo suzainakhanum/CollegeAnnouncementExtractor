@@ -1,0 +1,754 @@
+﻿/* =========================================================================
+   Campus Action - Global Styles
+   Sage Green + Cream visual theme
+
+   Calm, premium university-productivity aesthetic. Frontend-visual only:
+   all class names match the existing components; no markup/behavior changed.
+
+   Preserves:
+   - Req 8.2: consistent typographic scale + uniform spacing system (CSS vars)
+   - Req 8.3: WCAG 2.1 AA color contrast (>= 4.5:1 text, >= 3:1 large/UI)
+   - Req 8.4: visible focus indicators on all interactive elements
+   - Req 8.5: responsive 375px-1440px, no horizontal scroll / overflow
+   - Req 8.6: fade-in / slide-in section animation <= 400ms
+   ========================================================================= */
+
+:root {
+  /* ---- Sage + Cream palette ---- */
+  --color-cream: #f7f4ec;         /* warm page background */
+  --color-card: #fffdf8;          /* card background */
+  --color-white: #ffffff;
+  --color-sage: #78966f;          /* primary sage green */
+  --color-sage-dark: #496044;     /* dark sage (titles, headings) */
+  --color-sage-light: #dce6d7;    /* light sage (fills, chips) */
+  --color-sage-accent: #afc3a6;   /* soft green accent */
+  --color-text: #263326;          /* primary text */
+  --color-text-muted: #687367;    /* secondary text */
+  --color-border: #d8ded3;        /* subtle borders */
+
+  /* Sage hover/darker step for the primary button */
+  --color-sage-hover: #5f7e57;
+
+  /* Status (kept subtle, harmonized with the theme) */
+  --color-error-bg: #f8ebe8;
+  --color-error-border: #e3c4bd;
+  --color-error-text: #8a2b1c;    /* dark terracotta on light bg, >= 4.5:1 */
+
+  /* ---- Typographic scale (1.25 ratio, 16px base) ---- */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.25rem;   /* 20px */
+  --font-size-xl: 1.5rem;    /* 24px */
+  --font-size-2xl: 2.25rem;  /* 36px */
+
+  --line-height-tight: 1.25;
+  --line-height-base: 1.6;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+
+  /* ---- Spacing system (4px base) ---- */
+  --space-1: 0.25rem;  /* 4px  */
+  --space-2: 0.5rem;   /* 8px  */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-8: 3rem;     /* 48px */
+
+  /* ---- Radii + elevation ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;   /* cards: 16-20px range */
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(73, 96, 68, 0.05),
+    0 2px 8px rgba(73, 96, 68, 0.06);
+  --shadow-md: 0 6px 18px rgba(73, 96, 68, 0.10);
+  --shadow-focus: 0 0 0 3px rgba(120, 150, 111, 0.28);
+
+  /* ---- Layout ---- */
+  --content-max-width: 920px;
+
+  /* ---- Animation ---- */
+  --anim-duration: 340ms; /* <= 400ms per Req 8.6 */
+  --anim-fast: 160ms;
+  --anim-easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* -------------------------------------------------------------------------
+   Reset + base
+   ------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden; /* no horizontal overflow at any width (Req 8.5) */
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-cream);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+/* -------------------------------------------------------------------------
+   Accessibility: visible focus indicators (Req 8.4)
+   ------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-sage);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+button:focus,
+textarea:focus,
+a:focus {
+  outline: 3px solid var(--color-sage);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   App layout (Req 8.5)
+   ------------------------------------------------------------------------- */
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(1200px 400px at 50% -120px, rgba(175, 195, 166, 0.25), transparent 70%),
+    var(--color-cream);
+}
+
+.app__main {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* -------------------------------------------------------------------------
+   Header - prominent, premium spacing
+   ------------------------------------------------------------------------- */
+.header {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) var(--space-2);
+  text-align: center;
+}
+
+.header__title {
+  position: relative;
+  display: inline-block;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--line-height-tight);
+  color: var(--color-sage-dark);
+}
+
+/* Subtle sage accent underline beneath the title */
+.header__title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-sage-accent), var(--color-sage));
+}
+
+.header__subtitle {
+  margin-top: var(--space-5);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+
+/* -------------------------------------------------------------------------
+   Announcement input - cream/white card
+   ------------------------------------------------------------------------- */
+.announcement-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--anim-fast) var(--anim-easing);
+}
+
+.announcement-input:focus-within {
+  box-shadow: var(--shadow-md);
+}
+
+.announcement-input__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-sage-dark);
+}
+
+.announcement-input__textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 190px;
+  resize: vertical;
+  padding: var(--space-4);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--anim-fast) var(--anim-easing),
+    box-shadow var(--anim-fast) var(--anim-easing);
+}
+
+.announcement-input__textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+/* Clean sage-green focus border */
+.announcement-input__textarea:focus {
+  outline: none;
+  border-color: var(--color-sage);
+  box-shadow: var(--shadow-focus);
+}
+
+.announcement-input__textarea:disabled {
+  background-color: var(--color-sage-light);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.announcement-input__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.char-counter {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.char-counter--at-limit {
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.announcement-input__limit-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.announcement-input__validation {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.announcement-input__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Base button */
+.announcement-input__button {
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background-color: var(--color-sage-light);
+  color: var(--color-sage-dark);
+  cursor: pointer;
+  transition: background-color var(--anim-fast) var(--anim-easing),
+    border-color var(--anim-fast) var(--anim-easing),
+    transform var(--anim-fast) var(--anim-easing),
+    box-shadow var(--anim-fast) var(--anim-easing);
+}
+
+/* Softer cream/sage secondary buttons (Clear, Try Example) */
+.announcement-input__button:hover:not(:disabled) {
+  background-color: var(--color-sage-accent);
+  border-color: var(--color-sage-accent);
+  transform: translateY(-1px);
+}
+
+.announcement-input__button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Primary sage-green button (Extract Actions) */
+.announcement-input__button--primary {
+  background-color: var(--color-sage);
+  border-color: var(--color-sage);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.announcement-input__button--primary:hover:not(:disabled) {
+  background-color: var(--color-sage-hover);
+  border-color: var(--color-sage-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.announcement-input__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Loading indicator inside the submit button (Req 7.1) */
+.announcement-input__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.announcement-input__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: campus-spin 700ms linear infinite;
+}
+
+@keyframes campus-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Results dashboard states
+   ------------------------------------------------------------------------- */
+.results-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.results-dashboard--empty,
+.results-dashboard--loading,
+.results-dashboard--error {
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  font-size: var(--font-size-base);
+}
+
+.results-dashboard--empty {
+  background-color: var(--color-card);
+  border: 1.5px dashed var(--color-sage-accent);
+  color: var(--color-text-muted);
+}
+
+.results-dashboard--loading {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-sage-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.results-dashboard--error {
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.results-dashboard__empty-text {
+  max-width: 34rem;
+  margin: 0 auto;
+  line-height: var(--line-height-base);
+}
+
+.results-dashboard__summary {
+  margin-top: var(--space-3);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+}
+
+.results-dashboard__summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.results-dashboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.results-dashboard__list-item {
+  position: relative;
+  padding-left: var(--space-5);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+}
+
+.results-dashboard__list-item::before {
+  content: '';
+  position: absolute;
+  left: var(--space-2);
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-sage);
+}
+
+.results-dashboard__dates {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.results-dashboard__placeholder {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   Section card (Req 8.1 - card layout; Req 8.6 - animation)
+   ------------------------------------------------------------------------- */
+.section-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--anim-fast) var(--anim-easing),
+    box-shadow var(--anim-fast) var(--anim-easing),
+    border-color var(--anim-fast) var(--anim-easing);
+}
+
+.section-card:hover {
+  border-color: var(--color-sage-accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.section-card__title {
+  position: relative;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-sage-dark);
+  margin-bottom: var(--space-4);
+  padding-left: var(--space-3);
+}
+
+/* Sage accent bar beside each section heading */
+.section-card__title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(180deg, var(--color-sage), var(--color-sage-dark));
+}
+
+.section-card__body {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+/* Fade-in + slide-in on appearance (Req 8.6 - <= 400ms) */
+.section-card--animate {
+  animation: campus-fade-slide-in var(--anim-duration) var(--anim-easing) both;
+}
+
+@keyframes campus-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Priority badge (Req 6.4, 8.3 - icon + label + color; not color alone)
+   Styled in sage tones for the Important classification; icon and label
+   text remain the primary differentiators.
+   ------------------------------------------------------------------------- */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  border: 1.5px solid transparent;
+  letter-spacing: 0.01em;
+}
+
+.priority-badge__label {
+  line-height: 1;
+}
+
+/* Important - primary sage tone */
+.priority-badge--important {
+  background-color: var(--color-sage-light);
+  border-color: var(--color-sage-accent);
+  color: var(--color-sage-dark); /* dark sage on light sage - >= 4.5:1 */
+}
+
+/* Urgent - warmer, deeper contrast (still theme-harmonized) */
+.priority-badge--urgent {
+  background-color: #f2e5cf;
+  border-color: #e0c48c;
+  color: #7a4b00; /* dark amber on light - >= 4.5:1 */
+}
+
+/* Informational - soft neutral sage */
+.priority-badge--informational {
+  background-color: #e7efe4;
+  border-color: var(--color-sage-accent);
+  color: #35513a; /* deep green on pale green - >= 4.5:1 */
+}
+
+/* -------------------------------------------------------------------------
+   Action checklist (Req 6.2, 6.8) - clean task items
+   ------------------------------------------------------------------------- */
+.action-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.action-checklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  line-height: var(--line-height-base);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--anim-fast) var(--anim-easing),
+    background-color var(--anim-fast) var(--anim-easing);
+}
+
+.action-checklist__item:hover {
+  border-color: var(--color-sage-accent);
+  background-color: #fbfdf9;
+}
+
+.action-checklist__box {
+  font-size: var(--font-size-lg);
+  line-height: 1.2;
+  color: var(--color-sage);
+  flex-shrink: 0;
+}
+
+.action-checklist__label {
+  color: var(--color-text);
+}
+
+.action-checklist__placeholder {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   Date card (Req 6.3) - prominent light-sage cards with dark sage text
+   ------------------------------------------------------------------------- */
+.date-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-4);
+  background-color: var(--color-sage-light);
+  border: 1px solid var(--color-sage-accent);
+  border-left: 5px solid var(--color-sage);
+  border-radius: var(--radius-md);
+  transition: transform var(--anim-fast) var(--anim-easing),
+    box-shadow var(--anim-fast) var(--anim-easing);
+}
+
+.date-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.date-card__date {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-sage-dark);
+  letter-spacing: -0.01em;
+}
+
+.date-card__event {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.date-card__status {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-sage-dark);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-sage-accent);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--space-2);
+}
+
+/* -------------------------------------------------------------------------
+   Missing information section
+   ------------------------------------------------------------------------- */
+.missing-info-section__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.missing-info-section__item {
+  position: relative;
+  padding-left: var(--space-5);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+}
+
+.missing-info-section__item::before {
+  content: '!';
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  background-color: var(--color-sage);
+  border-radius: 50%;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive breakpoints (Req 8.5 - 375px to 1440px, no horizontal scroll)
+   ------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .app__main {
+    padding: var(--space-5) var(--space-3) var(--space-6);
+    gap: var(--space-5);
+  }
+
+  .header {
+    padding: var(--space-6) var(--space-3) var(--space-2);
+  }
+
+  .header__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .header__subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .section-card,
+  .announcement-input {
+    padding: var(--space-4);
+  }
+
+  .announcement-input__actions {
+    flex-direction: column;
+  }
+
+  .announcement-input__button {
+    width: 100%;
+  }
+}
+
+/* Two-column date grid on wider viewports */
+@media (min-width: 720px) {
+  .results-dashboard__dates {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion: honor user preference (accessibility)
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .section-card--animate {
+    animation: none;
+  }
+
+  .section-card:hover,
+  .date-card:hover,
+  .announcement-input__button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .announcement-input__spinner {
+    animation-duration: 1500ms;
+  }
+}
+

@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Announcement Analyzer",
+  "description": "Automatically analyzes college announcement .txt files placed in the announcements/ directory. Extracts a structured, actionable summary conforming to the Campus Action output schema and writes it to announcements/results/<filename>.json without inventing information or touching unrelated files.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "announcements/*.txt"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A .txt announcement file in the announcements/ directory was created or saved. Follow these steps exactly and do nothing else:\n\n1. Read the FULL text content of the announcement file that triggered this hook. This is your only source of truth.\n\n2. Analyze the announcement strictly according to the extraction rules defined in the Campus Action specification (.kiro/specs/campus-action-extractor/requirements.md and design.md). Distinguish mandatory requirements (\"must\") from recommendations (\"should\") and possibilities (\"may\"). Preserve ambiguity rather than resolving it.\n\n3. Produce a StructuredResult JSON object conforming to the output schema with these nine fields, in this order:\n   - \"summary\": string — one-paragraph executive summary.\n   - \"whatChanged\": string[] — changes described in the announcement.\n   - \"whoIsAffected\": string[] — affected student groups or roles.\n   - \"importantDates\": array of objects, each { \"date\": string, \"event\": string, \"status\"?: string } — every date mentioned, each tied to its event.\n   - \"requiredActions\": string[] — student must-do items only (never convert a suggestion into a mandatory action).\n   - \"exceptions\": string[] — exemptions or exclusion conditions.\n   - \"documentsOrMaterials\": string[] — IDs, forms, files, or materials students must bring or submit.\n   - \"priority\": one of exactly \"Urgent\", \"Important\", or \"Informational\". Use \"Urgent\" for a deadline within 48 hours or explicit urgency terms; \"Important\" for a later deadline or action items without urgency terms; \"Informational\" when there are no deadlines and no action items.\n   - \"missingInformation\": string[] — ambiguous, incomplete, or contradictory statements identified. If a field's information is not present in the announcement, state that it is not mentioned rather than inventing a value.\n\n4. NEVER invent, infer, or assume any information (dates, deadlines, affected groups, required actions, exceptions, or documents) that is not explicitly stated or clearly and directly referenced in the announcement content of the triggering file. Never omit information that is explicitly stated.\n\n5. Write your output ONLY to the corresponding result file: create the directory announcements/results/ if needed and write the JSON to announcements/results/<filename>.json, where <filename> is the triggering file's base name without its .txt extension (for example, announcements/exam-schedule.txt -> announcements/results/exam-schedule.json). Overwrite the result file if it already exists.\n\n6. Do NOT modify any source code, configuration, spec files, the triggering announcement file, or any other files unrelated to this announcement analysis. Your only write is the single result JSON file described above."
+  }
+}
